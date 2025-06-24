@@ -1,0 +1,114 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.280629770992366,
+        "y": 2.930916030534351
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.489835846267157,
+        "y": 2.309590586032002
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.7136927480916029,
+        "y": 0.8488072519083971
+      },
+      "prevControl": {
+        "x": 2.0005344473854967,
+        "y": 0.6072563472398553
+      },
+      "nextControl": {
+        "x": 1.289456106870229,
+        "y": 1.206059160305343
+      },
+      "isLocked": false,
+      "linkedName": "processor_collect"
+    },
+    {
+      "anchor": {
+        "x": 3.6115935114503817,
+        "y": 2.785782442748092
+      },
+      "prevControl": {
+        "x": 3.357068046070067,
+        "y": 2.344931404889274
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "processor_b_end"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": -130.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Slow Coral Station",
+      "minWaypointRelativePos": 0.9592760180995474,
+      "maxWaypointRelativePos": 1.0805429864253393,
+      "constraints": {
+        "maxVelocity": 1.125,
+        "maxAcceleration": 2.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Slow Approach",
+      "minWaypointRelativePos": 1.9167420814479632,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 0.75,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "PreElevate",
+      "waypointRelativePos": 1.8117647058823532,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PreElevate"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 3.25,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.3,
+    "rotation": -119.99999999999999
+  },
+  "reversed": false,
+  "folder": "processor_side",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -59.99999999999999
+  },
+  "useDefaultConstraints": true
+}
