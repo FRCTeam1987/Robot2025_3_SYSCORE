@@ -3,7 +3,7 @@ package frc.robot.state;
 import static frc.robot.RobotContainer.*;
 import static frc.robot.state.logic.functional.FunctionalState.*;
 
-// import dev.doglog.DogLog;
+import dev.doglog.DogLog;
 import frc.robot.state.logic.actions.DesiredAction;
 import frc.robot.state.logic.constants.FieldPosition;
 import frc.robot.state.logic.functional.FunctionalState;
@@ -289,10 +289,11 @@ public class Abomination {
   public static FunctionalState getState() {
 
     FunctionalState STATE = calculateRobotState();
-    // DogLog.log("STATE/Robot State", STATE.toString());
-    // DogLog.log("STATE/Score Mode", SCORE_MODE.toString());
-    // DogLog.log("STATE/Cached Mode", CACHED_SCORE_MODE.toString());
-    // DogLog.log("STATE/Desired Action", DESIRED_ACTION.toString());
+    DogLog.log("STATE/Robot State", STATE.toString());
+    DogLog.log("STATE/Score Mode", SCORE_MODE.toString());
+    DogLog.log("STATE/Collect Mode", COLLECT_MODE.toString());
+    DogLog.log("STATE/Cached Mode", CACHED_SCORE_MODE.toString());
+    DogLog.log("STATE/Desired Action", DESIRED_ACTION.toString());
     PREVIOUS_STATE = STATE;
     return STATE;
   }

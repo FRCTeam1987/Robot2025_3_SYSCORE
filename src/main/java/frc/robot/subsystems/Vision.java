@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.subsystems.constants.SubsystemConstants.VisionConstants.*;
 
-// import dev.doglog.DogLog;
+import dev.doglog.DogLog;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -58,10 +58,10 @@ public class Vision extends SubsystemBase {
               VecBuilder.fill(confidence, confidence, 0.0001));
         }
         if (RobotContainer.DEBUG) {
-          // DogLog.log("Vision/ScoringProcess/MT1Pose", estimate.pose);
-          // DogLog.log("Vision/ScoringProcess/MT1Degrees", estimate.pose.getRotation().getDegrees());
-          // DogLog.log("Vision/ScoringProcess/MT1Confidence", confidence);
-          // DogLog.log("Vision/ScoringProcess/MT1Active", true);
+          DogLog.log("Vision/ScoringProcess/MT1Pose", estimate.pose);
+          DogLog.log("Vision/ScoringProcess/MT1Degrees", estimate.pose.getRotation().getDegrees());
+          DogLog.log("Vision/ScoringProcess/MT1Confidence", confidence);
+          DogLog.log("Vision/ScoringProcess/MT1Active", true);
         }
         return true;
       } else if (estimate.avgTagDist < 3.75) {
@@ -74,9 +74,9 @@ public class Vision extends SubsystemBase {
               VecBuilder.fill(confidence, confidence, 99999999));
         }
         if (RobotContainer.DEBUG) {
-          // DogLog.log("Vision/ScoringProcess/MT2Pose", estimate.pose);
-          // DogLog.log("Vision/ScoringProcess/MT2Confidence", confidence);
-          // DogLog.log("Vision/ScoringProcess/MT1Active", false);
+          DogLog.log("Vision/ScoringProcess/MT2Pose", estimate.pose);
+          DogLog.log("Vision/ScoringProcess/MT2Confidence", confidence);
+          DogLog.log("Vision/ScoringProcess/MT1Active", false);
         }
         return true;
       }
@@ -98,8 +98,8 @@ public class Vision extends SubsystemBase {
             VecBuilder.fill(confidence, confidence, 99999999));
       }
       if (RobotContainer.DEBUG) {
-        // DogLog.log("Vision/IntakeProcess/Pose", estimate.pose);
-        // DogLog.log("Vision/IntakeProcess/Confidence", confidence);
+        DogLog.log("Vision/IntakeProcess/Pose", estimate.pose);
+        DogLog.log("Vision/IntakeProcess/Confidence", confidence);
       }
       return true;
     }

@@ -6,7 +6,7 @@ import static frc.robot.RobotContainer.JOYSTICK;
 import static frc.robot.RobotContainer.MAX_SPEED;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
-// import dev.doglog.DogLog;
+import dev.doglog.DogLog;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -46,19 +46,19 @@ public class DriveToPose extends Command {
   public DriveToPose(Pose2d target) {
     addRequirements(DRIVE);
     this.TARGET = () -> target;
-    this.ROBOT = RobotContainer.DRIVETRAIN::getPose;
+    this.ROBOT = () -> RobotContainer.DRIVETRAIN.getState().Pose;
   }
 
   public DriveToPose(Supplier<Pose2d> target) {
     addRequirements(DRIVE);
     this.TARGET = target;
-    this.ROBOT = RobotContainer.DRIVETRAIN::getPose;
+    this.ROBOT = () -> RobotContainer.DRIVETRAIN.getState().Pose;
   }
 
   public DriveToPose(Supplier<Pose2d> target, BooleanSupplier freeY) {
     addRequirements(DRIVE);
     this.TARGET = target;
-    this.ROBOT = RobotContainer.DRIVETRAIN::getPose;
+    this.ROBOT = () -> RobotContainer.DRIVETRAIN.getState().Pose;
     this.freeY = freeY;
   }
 
@@ -105,8 +105,8 @@ public class DriveToPose extends Command {
                       HOLONOMIC.calculate(currentPose, targetPose, 0.0, targetPose.getRotation()).toRobotRelative(new Rotation2d())));
     }
 
-    // DogLog.log("DriveToPose/targetPose", targetPose);
-    // DogLog.log("DriveToPose/isRunning", running);
+    DogLog.log("DriveToPose/targetPose", targetPose);
+    DogLog.log("DriveToPose/isRunning", running);
   }
 
   @Override
@@ -120,7 +120,7 @@ public class DriveToPose extends Command {
   }
 
   public boolean atGoal() {
-    final Pose2d pose = DRIVE.getPose();
+    final Pose2d pose = DRIVE.getState().Pose;
     return hasTargetDebounce.calculate(
         running
             && pose.getTranslation().getDistance(TARGET.get().getTranslation()) < 0.036

@@ -8,17 +8,21 @@ import static frc.robot.RobotContainer.ARM;
 import static frc.robot.RobotContainer.DRIVETRAIN;
 
 // import au.grapplerobotics.CanBridge;
-// import com.pathplanner.lib.commands.FollowPathCommand;
-// import com.pathplanner.lib.commands.PathPlannerAuto;
-// import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindingCommand;
+
+import dev.doglog.DogLog;
+import edu.wpi.first.wpilibj.DriverStation;
+// import dev.doglog.DogLogOptions;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-// import frc.robot.autos.AutoHelpers;
+import frc.robot.autos.AutoHelpers;
 
 public class Robot extends TimedRobot {
-  //private PathPlannerAuto AUTONOMOUS_COMMAND;
+  private PathPlannerAuto AUTONOMOUS_COMMAND;
 
   private final RobotContainer ROBOT_CONTAINER;
 
@@ -27,14 +31,13 @@ public class Robot extends TimedRobot {
   public static boolean hasClimberCoasted = false;
 
   public Robot() {
-
+        // DogLog.setOptions(
+        // new DogLogOptions().withLogExtras(false).withCaptureDs(false).withCaptureConsole(false));
     // CanBridge.runTCP();
+    //RobotController.setBrownoutVoltage(6.0);
 
-    //TODO: BREAKS SYSTEMCORE JNI
-    // RobotController.setBrownoutVoltage(6.0);
-
-    // FollowPathCommand.warmupCommand().schedule();
-    // PathfindingCommand.warmupCommand().schedule();
+    FollowPathCommand.warmupCommand().schedule();
+    PathfindingCommand.warmupCommand().schedule();
     ROBOT_CONTAINER = new RobotContainer();
   }
 
@@ -42,6 +45,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     RobotContainer.updateLocalizationState();
+    //DriverStation.reportWarning(String.valueOf(RobotContainer.JOYSTICK.getHID().getPOV()), false);
   }
 
   @Override
@@ -81,14 +85,14 @@ public class Robot extends TimedRobot {
     RobotContainer.autoTime = Timer.getFPGATimestamp();
 
     RobotContainer.VISION.setShouldUpdatePose(false);
-    // AUTONOMOUS_COMMAND = RobotContainer.getAutonomousCommand();
+    AUTONOMOUS_COMMAND = RobotContainer.getAutonomousCommand();
 
-    // AutoHelpers.matchTimeIncrement = Timer.getFPGATimestamp();
+    AutoHelpers.matchTimeIncrement = Timer.getFPGATimestamp();
 
     DRIVETRAIN.tareEverything();
-    // if (AUTONOMOUS_COMMAND != null) {
-    //   AUTONOMOUS_COMMAND.schedule();
-    // }
+    if (AUTONOMOUS_COMMAND != null) {
+      AUTONOMOUS_COMMAND.schedule();
+    }
     RobotContainer.ELEVATOR.setConfigAuto();
   }
 
@@ -102,9 +106,9 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     RobotContainer.autoTime = Timer.getFPGATimestamp();
     RobotContainer.ELEVATOR.setConfigTeleop();
-    // if (AUTONOMOUS_COMMAND != null) {
-    //   AUTONOMOUS_COMMAND.cancel();
-    // }
+    if (AUTONOMOUS_COMMAND != null) {
+      AUTONOMOUS_COMMAND.cancel();
+    }
   }
 
   @Override

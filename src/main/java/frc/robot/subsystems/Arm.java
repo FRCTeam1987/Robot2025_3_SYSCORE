@@ -25,7 +25,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.*;
-// import dev.doglog.DogLog;
+import dev.doglog.DogLog;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -118,16 +118,16 @@ public class Arm extends BroncSystem {
   @Override
   public void log() {
     // Update and log inputs from hardware
-    // DogLog.log("Arm/armSupplyCurrent", ARM_SUPPLY_CURRENT.getValueAsDouble());
-    // //    DogLog.log("Arm/armPosition", ARM_POSITION.getValueAsDouble());
-    // //    DogLog.log("Arm/armVelocity", ARM_VELOCITY.getValueAsDouble());
-    // DogLog.log("Arm/effectorSupplyCurrent", EFFECTOR_SUPPLY_CURRENT.getValueAsDouble());
-    // //    DogLog.log("Arm/effectorPosition", EFFECTOR_POSITION.getValueAsDouble());
-    // DogLog.log("Arm/encoderPosition", ENCODER_POSITION.getValueAsDouble());
-    // DogLog.log("Arm/isAtTarget", isAtTarget);
-    // DogLog.log("Arm/coralS1", CORAL_S1_SIGNAL.getValue());
-    // DogLog.log("Arm/coralS2", CORAL_S2_SIGNAL.getValue());
-    // DogLog.log("Arm/algaeS1", ALGAE_S1_SIGNAL.getValue());
+    DogLog.log("Arm/armSupplyCurrent", ARM_SUPPLY_CURRENT.getValueAsDouble());
+    //    DogLog.log("Arm/armPosition", ARM_POSITION.getValueAsDouble());
+    //    DogLog.log("Arm/armVelocity", ARM_VELOCITY.getValueAsDouble());
+    DogLog.log("Arm/effectorSupplyCurrent", EFFECTOR_SUPPLY_CURRENT.getValueAsDouble());
+    //    DogLog.log("Arm/effectorPosition", EFFECTOR_POSITION.getValueAsDouble());
+    DogLog.log("Arm/encoderPosition", ENCODER_POSITION.getValueAsDouble());
+    DogLog.log("Arm/isAtTarget", isAtTarget);
+    DogLog.log("Arm/coralS1", CORAL_S1_SIGNAL.getValue());
+    DogLog.log("Arm/coralS2", CORAL_S2_SIGNAL.getValue());
+    DogLog.log("Arm/algaeS1", ALGAE_S1_SIGNAL.getValue());
     //    DogLog.log("Arm/armIsConnected", leaderStatus.isOK());
     //    DogLog.log("Arm/effectorIsConnected", followerStatus.isOK());
     //    DogLog.log("Arm/encoderIsConnected", encoderStatus.isOK());

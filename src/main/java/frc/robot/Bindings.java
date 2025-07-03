@@ -26,12 +26,12 @@ public class Bindings extends RobotContainer {
     JOYSTICK.rightTrigger().whileTrue(new DriveToNearest(false, false));
     JOYSTICK.leftTrigger().whileTrue(new DriveToNearest(true, false));
     JOYSTICK
-        .povUp()
+        .pov(1)
         .onTrue(new InstCmd(() -> Abomination.setCollectMode(CollectMode.HUMAN_PLAYER_STATION)));
-    JOYSTICK.povLeft().onTrue(new InstCmd(() -> Abomination.setCollectMode(CollectMode.ALGAE_2)));
-    JOYSTICK.povRight().onTrue(new InstCmd(() -> Abomination.setCollectMode(CollectMode.ALGAE_3)));
-    JOYSTICK.povDown().onTrue(new InstCmd(() -> Abomination.setScoreMode(ScoreMode.CLIMB, true)));
-
+    JOYSTICK.pov(8).onTrue(new InstCmd(() -> Abomination.setCollectMode(CollectMode.ALGAE_2)));
+    JOYSTICK.pov(2).onTrue(new InstCmd(() -> Abomination.setCollectMode(CollectMode.ALGAE_3)));
+    JOYSTICK.pov(4).onTrue(new InstCmd(() -> Abomination.setScoreMode(ScoreMode.CLIMB, true)));
+//1924
     JOYSTICK
         .start()
         .onTrue(
@@ -70,7 +70,7 @@ public class Bindings extends RobotContainer {
                   Abomination.setAction(DesiredAction.RECOVERY);
                   Abomination.setCollectMode(CollectMode.HUMAN_PLAYER_STATION);
                 }));
-    JOYSTICK.povDown().onTrue(new InstCmd(() -> Abomination.setScoreMode(ScoreMode.CLIMB, true)));
+    //JOYSTICK.pov(4).onTrue(new InstCmd(() -> Abomination.setScoreMode(ScoreMode.CLIMB, true)));
     CODRIVER_JOYSTICK
         .rightBumper()
         .onTrue(new InstCmd(() -> Abomination.setAction(DesiredAction.SCORE)));

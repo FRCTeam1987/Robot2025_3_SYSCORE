@@ -22,7 +22,7 @@ import com.ctre.phoenix6.controls.DynamicMotionMagicVoltage;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-// import dev.doglog.DogLog;
+import dev.doglog.DogLog;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.units.measure.*;
 import frc.robot.RobotContainer;
@@ -86,16 +86,16 @@ public class Elevator extends BroncSystem {
   public void log() {
 
     if (RobotContainer.DEBUG) {
-      // DogLog.log("Elevator/leaderSupplyCurrent", LEADER_SUPPLY_CURRENT.getValueAsDouble());
-      // DogLog.log("Elevator/leaderPosition", LEADER_POSITION.getValueAsDouble());
-      // //      DogLog.log("Elevator/leaderVelocity", LEADER_VELOCITY.getValueAsDouble());
-      // DogLog.log("Elevator/followerSupplyCurrent", FOLLOWER_SUPPLY_CURRENT.getValueAsDouble());
-      // //      DogLog.log("Elevator/followerPosition", FOLLOWER_POSITION.getValueAsDouble());
-      // DogLog.log("Elevator/isAtTarget", isAtTarget);
-      // DogLog.log("Elevator/target", target.in(Meters));
-      // DogLog.log("Elevator/distance", distance.in(Meters));
-      //    DogLog.log("Elevator/current", LEADER.getSupplyCurrent().getValueAsDouble());
-      //    DogLog.log("Elevator/voltage", LEADER.getMotorVoltage().getValueAsDouble());
+      DogLog.log("Elevator/leaderSupplyCurrent", LEADER_SUPPLY_CURRENT.getValueAsDouble());
+      DogLog.log("Elevator/leaderPosition", LEADER_POSITION.getValueAsDouble());
+      //      DogLog.log("Elevator/leaderVelocity", LEADER_VELOCITY.getValueAsDouble());
+      DogLog.log("Elevator/followerSupplyCurrent", FOLLOWER_SUPPLY_CURRENT.getValueAsDouble());
+      //      DogLog.log("Elevator/followerPosition", FOLLOWER_POSITION.getValueAsDouble());
+      DogLog.log("Elevator/isAtTarget", isAtTarget);
+      DogLog.log("Elevator/target", target.in(Meters));
+      DogLog.log("Elevator/distance", distance.in(Meters));
+         DogLog.log("Elevator/current", LEADER.getSupplyCurrent().getValueAsDouble());
+         DogLog.log("Elevator/voltage", LEADER.getMotorVoltage().getValueAsDouble());
       // DogLog.log("Elevator/leaderIsConnected", leaderStatus.isOK());
       // DogLog.log("Elevator/followerIsConnected", followerStatus.isOK());
     }
@@ -119,8 +119,8 @@ public class Elevator extends BroncSystem {
   public void setDistance(Distance distance) {
     if (recovering) return;
     if (distance.gt(MAXIMUM_HEIGHT) || distance.lt(MINIMUM_HEIGHT)) return;
-    if ((RobotContainer.DRIVETRAIN.getChassisSpeeds().vy > 2.0)
-        || (RobotContainer.DRIVETRAIN.getChassisSpeeds().vx > 2.0)) return;
+    if ((RobotContainer.DRIVETRAIN.getChassisSpeeds().vx > 2.0)
+        || (RobotContainer.DRIVETRAIN.getChassisSpeeds().vy > 2.0)) return;
     Angle distanceAngle = Conversions.metersToRotations(distance, 1.0, PULLEY_RADIUS);
     if (LEADER.getPosition().getValue().lt(distanceAngle)) {
 

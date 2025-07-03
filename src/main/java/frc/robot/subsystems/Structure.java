@@ -16,7 +16,7 @@ public class Structure extends SubsystemBase {
     ELEVATOR.preCycle();
     INTAKE.preCycle();
     CLIMBER.preCycle();
-    // LIGHTS.preCycle();
+    LIGHTS.preCycle();
     //    NetworkTableTimer.wrap("ARM.preCycle", RobotContainer.ARM::preCycle).run();
     //    NetworkTableTimer.wrap("ELEVATOR.preCycle", RobotContainer.ELEVATOR::preCycle).run();
     //    NetworkTableTimer.wrap("INTAKE.preCycle", RobotContainer.INTAKE::preCycle).run();
@@ -32,7 +32,7 @@ public class Structure extends SubsystemBase {
     STATE.ACTION.getClimb().run();
     // STATE.ACTION.getLights().run();
 
-    // LIGHTS.postCycle();
+    LIGHTS.postCycle();
 
     //    NetworkTableTimer.wrap("STATE.ACTION.getArm", STATE.ACTION.getArm()).run();
     //    NetworkTableTimer.wrap("STATE.ACTION.getRoller", STATE.ACTION.getRoller()).run();

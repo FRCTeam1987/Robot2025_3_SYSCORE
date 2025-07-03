@@ -11,7 +11,7 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-// import dev.doglog.DogLog;
+import dev.doglog.DogLog;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import frc.robot.RobotContainer;
@@ -51,9 +51,9 @@ public class Intake extends BroncSystem {
   public void log() {
     StatusCode motorStatus = BaseStatusSignal.refreshAll(INTAKE_SUPPLY_CURRENT, INTAKE_VELOCITY);
     if (RobotContainer.DEBUG) {
-      // DogLog.log("Intake/supplyCurrent", INTAKE_SUPPLY_CURRENT.getValueAsDouble());
-      // DogLog.log("Intake/velocity", INTAKE_VELOCITY.getValueAsDouble());
-      // DogLog.log("Intake/isConnected", motorStatus.isOK());
+      DogLog.log("Intake/supplyCurrent", INTAKE_SUPPLY_CURRENT.getValueAsDouble());
+      DogLog.log("Intake/velocity", INTAKE_VELOCITY.getValueAsDouble());
+      DogLog.log("Intake/isConnected", motorStatus.isOK());
     }
   }
 

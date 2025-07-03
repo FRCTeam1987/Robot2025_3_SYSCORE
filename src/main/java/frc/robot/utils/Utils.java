@@ -1,8 +1,8 @@
 package frc.robot.utils;
 
-// import com.pathplanner.lib.auto.AutoBuilder;
-// import com.pathplanner.lib.commands.PathPlannerAuto;
-// import dev.doglog.DogLog;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -25,7 +25,7 @@ public class Utils {
 
   public static void incrementArm(double amount) {
     armIncrement += amount;
-    // DogLog.log("Arm/OverrideValue", armIncrement);
+    DogLog.log("Arm/OverrideValue", armIncrement);
   }
 
   public static double getArmOverride() {
@@ -147,45 +147,45 @@ public class Utils {
     }
   }
 
-  // public static SendableChooser<PathPlannerAuto> buildAutoChooser(String defaultAutoName) {
-  //   return buildAutoChooserWithOptionsModifier(defaultAutoName, (stream) -> stream);
-  // }
+  public static SendableChooser<PathPlannerAuto> buildAutoChooser(String defaultAutoName) {
+    return buildAutoChooserWithOptionsModifier(defaultAutoName, (stream) -> stream);
+  }
 
-  // public static SendableChooser<PathPlannerAuto> buildAutoChooserWithOptionsModifier(
-  //     String defaultAutoName,
-  //     Function<Stream<PathPlannerAuto>, Stream<PathPlannerAuto>> optionsModifier) {
-  //   if (!AutoBuilder.isConfigured()) {
-  //     throw new RuntimeException(
-  //         "AutoBuilder was not configured before attempting to build an auto chooser");
-  //   }
+  public static SendableChooser<PathPlannerAuto> buildAutoChooserWithOptionsModifier(
+      String defaultAutoName,
+      Function<Stream<PathPlannerAuto>, Stream<PathPlannerAuto>> optionsModifier) {
+    if (!AutoBuilder.isConfigured()) {
+      throw new RuntimeException(
+          "AutoBuilder was not configured before attempting to build an auto chooser");
+    }
 
-  //   SendableChooser<PathPlannerAuto> chooser = new SendableChooser<>();
-  //   List<String> autoNames = AutoBuilder.getAllAutoNames();
+    SendableChooser<PathPlannerAuto> chooser = new SendableChooser<>();
+    List<String> autoNames = AutoBuilder.getAllAutoNames();
 
-  //   PathPlannerAuto defaultOption = null;
-  //   List<PathPlannerAuto> options = new ArrayList<>();
+    PathPlannerAuto defaultOption = null;
+    List<PathPlannerAuto> options = new ArrayList<>();
 
-  //   for (String autoName : autoNames) {
-  //     PathPlannerAuto auto = new PathPlannerAuto(autoName);
+    for (String autoName : autoNames) {
+      PathPlannerAuto auto = new PathPlannerAuto(autoName);
 
-  //     if (!defaultAutoName.isEmpty() && defaultAutoName.equals(autoName)) {
-  //       defaultOption = auto;
-  //     } else {
-  //       options.add(auto);
-  //     }
-  //   }
+      if (!defaultAutoName.isEmpty() && defaultAutoName.equals(autoName)) {
+        defaultOption = auto;
+      } else {
+        options.add(auto);
+      }
+    }
 
-  //   if (defaultOption == null) {
-  //     chooser.setDefaultOption("None", new PathPlannerAuto(Commands.none()));
-  //   } else {
-  //     chooser.setDefaultOption(defaultOption.getName(), defaultOption);
-  //     chooser.addOption("None", new PathPlannerAuto(Commands.none()));
-  //   }
+    if (defaultOption == null) {
+      chooser.setDefaultOption("None", new PathPlannerAuto(Commands.none()));
+    } else {
+      chooser.setDefaultOption(defaultOption.getName(), defaultOption);
+      chooser.addOption("None", new PathPlannerAuto(Commands.none()));
+    }
 
-  //   optionsModifier
-  //       .apply(options.stream())
-  //       .forEach(auto -> chooser.addOption(auto.getName(), auto));
+    optionsModifier
+        .apply(options.stream())
+        .forEach(auto -> chooser.addOption(auto.getName(), auto));
 
-  //   return chooser;
-  // }
+    return chooser;
+  }
 }
