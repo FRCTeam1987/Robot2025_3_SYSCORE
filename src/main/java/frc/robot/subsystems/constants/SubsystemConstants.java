@@ -201,6 +201,7 @@ public class SubsystemConstants {
 
   public static class ClimberConstants {
     public static final int LEADER_MOTOR_ID = 9;
+    public static final int ROLLER_MOTOR_ID = 10;
     public static final String CANBUS_NAME = "canfd";
     public static final int ENCODER_ID = 6;
     public static final int LASER_L_ID = 2;
@@ -209,6 +210,8 @@ public class SubsystemConstants {
     public static final Angle FULLY_STOWED = Degrees.of(90.0);
     public static final Angle FULLY_EXTENDED = Degrees.of(180.0);
     public static final Angle FULLY_CLIMBED = Degrees.of(93.0);
+
+    public static final Voltage ROLLER_VOLTAGE = Volts.of(6.0);
 
     public static final double CLIMBER_REDUCTION = (144);
 
@@ -221,6 +224,19 @@ public class SubsystemConstants {
       return CFG;
     }
 
+    public static TalonFXConfiguration rollerConfig() {
+      final TalonFXConfiguration CFG = new TalonFXConfiguration();
+
+      // MotorOutput
+      CFG.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
+
+      // CurrentLimits
+      CFG.CurrentLimits.withSupplyCurrentLimit(Amps.of(20.0));
+      CFG.CurrentLimits.withSupplyCurrentLimitEnable(true);
+
+      return CFG;
+    }
+    
     public static TalonFXConfiguration climberConfig() {
       final TalonFXConfiguration CFG = new TalonFXConfiguration();
 

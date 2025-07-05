@@ -41,6 +41,8 @@ public class Climber extends BroncSystem {
 
   public final TalonFX LEADER = new TalonFX(LEADER_MOTOR_ID, CANBUS_NAME);
 
+  public final TalonFX ROLLER = new TalonFX(ROLLER_MOTOR_ID, CANBUS_NAME);
+
   public final CANcoder ENCODER = new CANcoder(ENCODER_ID, CANBUS_NAME);
 
   // public final LaserCan LASER_L = new LaserCan(LASER_L_ID);
@@ -65,6 +67,7 @@ public class Climber extends BroncSystem {
     TalonFXConfiguration config = climberConfig();
     ENCODER.getConfigurator().apply(encoderConfig());
     LEADER.getConfigurator().apply(config);
+    ROLLER.getConfigurator().apply(rollerConfig());
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0, LEADER_POSITION, LEADER_SUPPLY_CURRENT, ENCODER_POSITION);
     LEADER.setPosition(0.0);
@@ -118,8 +121,13 @@ public class Climber extends BroncSystem {
 
   public static final PositionVoltage mmDeploy = new PositionVoltage(FULLY_EXTENDED);
 
+  public static final VoltageOut runRollers = new VoltageOut(ROLLER_VOLTAGE);
+  public static final VoltageOut halfRollers = new VoltageOut(ROLLER_VOLTAGE.div(2.0));
+  public static final VoltageOut stopRollers = new VoltageOut(0);
+
   public void deploy() {
     setPosition(mmDeploy);
+    ROLLER.setControl(runRollers);
     // setPosition(FULLY_EXTENDED);
   }
 
@@ -127,6 +135,7 @@ public class Climber extends BroncSystem {
 
   public void climb() {
     setPosition(mmClimb);
+    ROLLER.setControl(halfRollers);
     // setPosition(FULLY_CLIMBED);
   }
 
@@ -134,6 +143,7 @@ public class Climber extends BroncSystem {
 
   public void stow() {
     setPosition(mmStow);
+    ROLLER.setControl(stopRollers);
     // setPosition(FULLY_STOWED);
   }
 
