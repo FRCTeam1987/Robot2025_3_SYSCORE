@@ -13,6 +13,7 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static frc.robot.subsystems.constants.SubsystemConstants.ClimberConstants.*;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -27,7 +28,9 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import dev.doglog.DogLog;
+import edu.wpi.first.units.AngularVelocityUnit;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -41,7 +44,7 @@ public class Climber extends BroncSystem {
 
   public final TalonFX LEADER = new TalonFX(LEADER_MOTOR_ID, CANBUS_NAME);
 
-  public final TalonFX ROLLER = new TalonFX(ROLLER_MOTOR_ID, CANBUS_NAME);
+  public final TalonFX ROLLER = new TalonFX(ROLLER_MOTOR_ID);
 
   public final CANcoder ENCODER = new CANcoder(ENCODER_ID, CANBUS_NAME);
 
@@ -122,7 +125,6 @@ public class Climber extends BroncSystem {
   public static final PositionVoltage mmDeploy = new PositionVoltage(FULLY_EXTENDED);
 
   public static final VoltageOut runRollers = new VoltageOut(ROLLER_VOLTAGE);
-  public static final VoltageOut halfRollers = new VoltageOut(ROLLER_VOLTAGE.div(2.0));
   public static final VoltageOut stopRollers = new VoltageOut(0);
 
   public void deploy() {
@@ -135,7 +137,7 @@ public class Climber extends BroncSystem {
 
   public void climb() {
     setPosition(mmClimb);
-    ROLLER.setControl(halfRollers);
+    ROLLER.setControl(stopRollers);
     // setPosition(FULLY_CLIMBED);
   }
 
@@ -176,7 +178,11 @@ public class Climber extends BroncSystem {
   }
 
   public boolean isAtTarget() {
-    return getPosition().isNear(target, Degrees.of(0.5));
+    return getPosition().isNear(target, Degrees.of(3.0)); // was 0.5, new climber doesn't seem to be as consistent
+  }
+
+  public AngularVelocity getRollerRPS() {
+    return ROLLER.getVelocity().getValue();
   }
 
   @Override
@@ -191,6 +197,7 @@ public class Climber extends BroncSystem {
     if (RobotContainer.DEBUG) {
       DogLog.log("Climber/leaderPosition", LEADER_POSITION.getValueAsDouble());
       DogLog.log("Climber/encoderPosition", ENCODER_POSITION.getValueAsDouble());
+      // DogLog.log("Climber/encoderDegrees", Degrees.convertFrom(ENCODER_POSITION.getValueAsDouble(), Rotations));
       DogLog.log("Climber/leaderCurrent", LEADER_SUPPLY_CURRENT.getValueAsDouble());
       // if (Abomination.getScoreMode() == ScoreMode.CLIMB) {
       //   DogLog.log("Climber/laserLDist", LASER_L_DATA.get().distance_mm);
@@ -200,6 +207,7 @@ public class Climber extends BroncSystem {
       // }
       DogLog.log("Climber/isAtTarget", isAtTarget());
       DogLog.log("Climber/target", target.in(Rotations));
+      DogLog.log("Climber/rollerRPS", getRollerRPS().baseUnitMagnitude());
     }
   }
 

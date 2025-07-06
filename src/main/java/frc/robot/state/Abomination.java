@@ -9,6 +9,7 @@ import frc.robot.state.logic.constants.FieldPosition;
 import frc.robot.state.logic.functional.FunctionalState;
 import frc.robot.state.logic.mode.CollectMode;
 import frc.robot.state.logic.mode.ScoreMode;
+import frc.robot.subsystems.constants.SubsystemConstants.ClimberConstants;
 
 public class Abomination {
 
@@ -179,6 +180,11 @@ public class Abomination {
         switch (PREVIOUS_STATE) {
           case CLIMB_DEPLOY -> {
             if (CLIMBER.isAtTarget()) {
+              // Add this logic as Climber.hasCage()
+              // if (CLIMBER.getRollerRPS().lt(ClimberConstants.ROLLER_VELOCITY_THRESHOLD)) {
+              //   setAction(DesiredAction.INIT);
+              //   return CLIMB_CLIMB;
+              // }
               if (shouldScore()) {
                 return CLIMB_CLIMB;
               }

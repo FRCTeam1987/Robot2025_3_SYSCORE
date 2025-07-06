@@ -208,10 +208,11 @@ public class SubsystemConstants {
     public static final int LASER_R_ID = 1;
 
     public static final Angle FULLY_STOWED = Degrees.of(90.0);
-    public static final Angle FULLY_EXTENDED = Degrees.of(180.0);
-    public static final Angle FULLY_CLIMBED = Degrees.of(93.0);
+    public static final Angle FULLY_EXTENDED = Degrees.of(178.0); // was 180.0
+    public static final Angle FULLY_CLIMBED = Degrees.of(95.5); // was 93.0
 
-    public static final Voltage ROLLER_VOLTAGE = Volts.of(6.0);
+    public static final Voltage ROLLER_VOLTAGE = Volts.of(10.0);
+    public static final AngularVelocity ROLLER_VELOCITY_THRESHOLD = AngularVelocity.ofBaseUnits(150.0, RotationsPerSecond);
 
     public static final double CLIMBER_REDUCTION = (144);
 
@@ -219,7 +220,7 @@ public class SubsystemConstants {
       final CANcoderConfiguration CFG = new CANcoderConfiguration();
       // MagnetSensor
       CFG.MagnetSensor.withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
-      CFG.MagnetSensor.withMagnetOffset(Rotations.of(-0.347168).plus(Degrees.of(90.0)));
+      CFG.MagnetSensor.withMagnetOffset(Rotations.of(-0.296).plus(Degrees.of(90.0)));
       CFG.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(Rotations.of(1.0));
       return CFG;
     }
@@ -248,8 +249,8 @@ public class SubsystemConstants {
       CFG.Slot0.withKI(0.0);
       CFG.Slot0.withKD(0.01);
 
-      CFG.MotionMagic.withMotionMagicAcceleration(600);
-      CFG.MotionMagic.withMotionMagicCruiseVelocity(100);
+      CFG.MotionMagic.withMotionMagicAcceleration(600); // want more, like 900
+      CFG.MotionMagic.withMotionMagicCruiseVelocity(100); // want more, like 200
 
       // Feedback
       CFG.Feedback.withFeedbackRemoteSensorID(ENCODER_ID);
