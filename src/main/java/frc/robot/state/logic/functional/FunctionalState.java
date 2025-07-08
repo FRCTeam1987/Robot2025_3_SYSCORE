@@ -7,6 +7,13 @@ import static frc.robot.state.Abomination.getScoreMode;
 import static frc.robot.state.logic.constants.StateConstants.COLLECT_ZONES;
 import static frc.robot.subsystems.constants.SubsystemConstants.LightsConstants.*;
 
+import com.ctre.phoenix6.controls.EmptyAnimation;
+import com.ctre.phoenix6.controls.LarsonAnimation;
+import com.ctre.phoenix6.controls.SingleFadeAnimation;
+import com.ctre.phoenix6.controls.StrobeAnimation;
+import com.ctre.phoenix6.signals.LarsonBounceValue;
+import com.ctre.phoenix6.signals.RGBWColor;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Robot;
@@ -32,7 +39,22 @@ public enum FunctionalState {
             } else {
               INTAKE.start();
             }
-          })),
+          },
+          () -> {
+            if (DriverStation.isDisabled()) {
+                RGBWColor C =
+                DRIVETRAIN.getAlliance() == DriverStation.Alliance.Red
+                    ? new RGBWColor(255, 0, 0)
+                    : new RGBWColor(0, 0, 255);
+                LIGHTS.setControl(new EmptyAnimation(1));
+                LIGHTS.setControl(new SingleFadeAnimation(SIDE_START, UPRIGHTS_END).withSlot(0).withColor(C).withFrameRate(60));
+            } else {
+                LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(COLLECT_COLOR).withBounceMode(LarsonBounceValue.Center).withFrameRate(IDLE_SPEED));
+                LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(COLLECT_COLOR).withBounceMode(LarsonBounceValue.Center).withFrameRate(IDLE_SPEED));
+            }
+            }
+
+            )),
 
   COLLECTED_CORAL(
       new FunctionalAction(
@@ -47,32 +69,82 @@ public enum FunctionalState {
           },
           () -> ARM.setArmPosition(getScoreMode().getIdleMechanismConstant().getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(0.9)),
-          INTAKE::stop)),
+          INTAKE::stop,
+            () -> {
+                if (DriverStation.isDisabled()) {
+                    RGBWColor C =
+                    DRIVETRAIN.getAlliance() == DriverStation.Alliance.Red
+                        ? new RGBWColor(255, 0, 0)
+                        : new RGBWColor(0, 0, 255);
+                    LIGHTS.setControl(new EmptyAnimation(1));
+                    LIGHTS.setControl(new SingleFadeAnimation(SIDE_START, UPRIGHTS_END).withSlot(0).withColor(C).withFrameRate(60));
+                } else {
+                    RGBWColor C = getScoreColor();
+                    LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(COLLECTED_SPEED));
+                    LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(COLLECTED_SPEED));
+                }
+            
+            }
+            )),
   COLLECTED_ALGAE(
       new FunctionalAction(
           () ->
               ELEVATOR.setDistance(getScoreMode().getIdleMechanismConstant().getElevatorDistance()),
           () -> ARM.setArmPosition(getScoreMode().getIdleMechanismConstant().getArmAngle()),
           ARM::dynamicHold,
-          INTAKE::stop)),
+          INTAKE::stop,
+          () -> {
+            if (DriverStation.isDisabled()) {
+                RGBWColor C =
+                DRIVETRAIN.getAlliance() == DriverStation.Alliance.Red
+                    ? new RGBWColor(255, 0, 0)
+                    : new RGBWColor(0, 0, 255);
+                LIGHTS.setControl(new EmptyAnimation(1));
+                LIGHTS.setControl(new SingleFadeAnimation(SIDE_START, UPRIGHTS_END).withSlot(0).withColor(C).withFrameRate(60));
+            } else {
+                RGBWColor C = getScoreColor();
+                LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(COLLECTED_SPEED));
+                LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(COLLECTED_SPEED));
+            }
+        
+        }
+            )),
   PROCESSOR_ELEVATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
           () -> ARM.setArmPosition(MechanismConstant.A2.getArmAngle()),
           ARM::dynamicHold,
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+            }
+            )),
   PROCESSOR_ROTATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
           () -> ARM.setArmPosition(getScoreMode().getMechanismConstant().getArmAngle()),
           ARM::dynamicHold,
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+            }
+            )),
   PROCESSOR_SCORE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
           () -> ARM.setArmPosition(getScoreMode().getMechanismConstant().getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(-6.0)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new StrobeAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withFrameRate(SCORE_STROBE_SPEED));
+                        LIGHTS.setControl(new StrobeAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withFrameRate(SCORE_STROBE_SPEED));
+            }
+            )),
   NET_ELEVATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
@@ -80,7 +152,13 @@ public enum FunctionalState {
               ARM.setArmPosition(
                   getScoreMode().getMechanismConstant().getArmAngle().minus(Degrees.of(35))),
           ARM::dynamicHold,
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+            }
+            )),
   NET_ROTATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
@@ -88,7 +166,13 @@ public enum FunctionalState {
               ARM.setArmPosition(
                   getScoreMode().getMechanismConstant().getArmAngle().minus(Degrees.of(35))),
           () -> ARM.setClawVoltage(Volts.of(4.25)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+            }
+            )),
   NET_SCORE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
@@ -97,19 +181,37 @@ public enum FunctionalState {
           //           getScoreMode().getMechanismConstant().getArmAngle().plus(Degrees.of(15))),
           () -> ARM.setArmPosition(MechanismConstant.HP_INTAKE.getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(-16.0)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new StrobeAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withFrameRate(SCORE_STROBE_SPEED));
+                        LIGHTS.setControl(new StrobeAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withFrameRate(SCORE_STROBE_SPEED));
+            }
+            )),
   NET_UNROTATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
           () -> ARM.setArmPosition(MechanismConstant.HP_INTAKE.getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(1.0)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+            }
+            )),
   NET_UNELEVATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(MechanismConstant.IDLE_CORAL.getElevatorDistance()),
           () -> ARM.setArmPosition(MechanismConstant.HP_INTAKE.getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(1.0)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+            }
+            )),
   LEVEL_X_ELEVATE(
       new FunctionalAction(
           () -> {
@@ -117,7 +219,13 @@ public enum FunctionalState {
           },
           () -> ARM.setArmPosition(getScoreMode().getIdleMechanismConstant().getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(1)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+            }
+            )),
   LEVEL_X_ROTATE(
       new FunctionalAction(
           () -> {
@@ -125,7 +233,13 @@ public enum FunctionalState {
           },
           () -> ARM.setArmPosition(getScoreMode().getMechanismConstant().getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(1)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+            }
+            )),
   LEVEL_X_SCORE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
@@ -141,33 +255,72 @@ public enum FunctionalState {
                       default -> inBack ? -3.0 : -1.8;
                     }));
           },
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new StrobeAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withFrameRate(SCORE_STROBE_SPEED));
+                        LIGHTS.setControl(new StrobeAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withFrameRate(SCORE_STROBE_SPEED));
+            }
+            )),
   LEVEL_X_UNROTATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(getScoreMode().getMechanismConstant().getElevatorDistance()),
           () -> ARM.setArmPosition(MechanismConstant.IDLE_CORAL.getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(-6.0)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+            }
+            )),
   LEVEL_X_UNELEVATE(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(MechanismConstant.IDLE_CORAL.getElevatorDistance()),
           () -> ARM.setArmPosition(MechanismConstant.HP_INTAKE.getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(0.0)),
-          INTAKE::stop)),
+          INTAKE::stop,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(DOWN_SPEED));
+            }
+            )),
   CLIMB_DEPLOY(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(MechanismConstant.CLIMB.getElevatorDistance()),
           () -> ARM.setArmPosition(MechanismConstant.CLIMB.getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(0.0)),
           INTAKE::stop,
-          CLIMBER::deploy)),
+          CLIMBER::deploy,
+                    () -> {
+                        RGBWColor C = getScoreColor();
+                        LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                        LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+            }
+            )),
   CLIMB_CLIMB(
       new FunctionalAction(
           () -> ELEVATOR.setDistance(MechanismConstant.CLIMB.getElevatorDistance()),
           () -> ARM.setArmPosition(MechanismConstant.CLIMB.getArmAngle()),
           () -> ARM.setClawVoltage(Volts.of(0.0)),
           INTAKE::stop,
-          CLIMBER::climb)),
+          CLIMBER::climb,
+                    () -> {
+                        if (!Robot.hasClimberCoasted) {
+                            RGBWColor C =
+                            DRIVETRAIN.getAlliance() == DriverStation.Alliance.Red
+                                ? new RGBWColor(255, 0, 0)
+                                : new RGBWColor(0, 0, 255);
+                            LIGHTS.setControl(new EmptyAnimation(1));
+                            LIGHTS.setControl(new SingleFadeAnimation(SIDE_START, UPRIGHTS_END).withSlot(0).withColor(C).withFrameRate(60));
+                          } else {
+                            RGBWColor C = getScoreColor();
+                            LIGHTS.setControl(new LarsonAnimation(SIDE_START, SIDE_END).withSlot(0).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(CLIMB_CLIMB_SPEED));
+                            LIGHTS.setControl(new LarsonAnimation(UPRIGHTS_START, UPRIGHTS_END).withSlot(1).withColor(C).withBounceMode(LarsonBounceValue.Center).withFrameRate(UP_SPEED));
+                          }
+            }
+            )),
   ;
 
   public final FunctionalAction ACTION;

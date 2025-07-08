@@ -30,7 +30,7 @@ public class Structure extends SubsystemBase {
     STATE.ACTION.getElev().run();
     STATE.ACTION.getIntake().run();
     STATE.ACTION.getClimb().run();
-    // STATE.ACTION.getLights().run();
+    STATE.ACTION.getLights().run();
 
     LIGHTS.postCycle();
 

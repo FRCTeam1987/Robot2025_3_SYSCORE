@@ -5,9 +5,19 @@
 package frc.robot.subsystems;
 
 import static frc.robot.RobotContainer.DRIVETRAIN;
-import static frc.robot.subsystems.constants.SubsystemConstants.LightsConstants.UPRIGHTS;
+import static frc.robot.subsystems.constants.SubsystemConstants.LightsConstants.OG;
+import static frc.robot.subsystems.constants.SubsystemConstants.LightsConstants.SIDE_END;
+import static frc.robot.subsystems.constants.SubsystemConstants.LightsConstants.SIDE_START;
 
+import java.util.ResourceBundle.Control;
+
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.EmptyAnimation;
+import com.ctre.phoenix6.controls.LarsonAnimation;
+import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.hardware.CANdle;
+import com.ctre.phoenix6.signals.LarsonBounceValue;
+import com.ctre.phoenix6.signals.RGBWColor;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -49,6 +59,11 @@ public class Lights extends BroncSystem {
   @Override
   public void log() {}
 
+  public void setControl(ControlRequest req) {
+    CANDLE.setControl(req);
+  
+  }
+
   // public void applyAnimationUpright(Animation animation) {
   //   if (shouldUpdate()) {
   //     CANDLE.clearAnimation(1);
@@ -64,7 +79,6 @@ public class Lights extends BroncSystem {
   // }
 
   public boolean shouldUpdate() {
-
     return Abomination.getScoreMode() != PREVIOUS_SCORE_MODE
         || Abomination.getCollectMode() != PREVIOUS_COLLECT_MODE
         || DriverStation.isEnabled() != PREVIOUSLY_ENABLED
