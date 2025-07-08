@@ -307,7 +307,7 @@ public enum FunctionalState {
           INTAKE::stop,
           CLIMBER::climb,
                     () -> {
-                        if (!Robot.hasClimberCoasted) {
+                        if (Robot.hasClimberCoasted) {
                             RGBWColor C =
                             DRIVETRAIN.getAlliance() == DriverStation.Alliance.Red
                                 ? new RGBWColor(255, 0, 0)

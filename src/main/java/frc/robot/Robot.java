@@ -106,6 +106,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     RobotContainer.autoTime = Timer.getFPGATimestamp();
     RobotContainer.ELEVATOR.setConfigTeleop();
+    RobotContainer.VISION.setShouldUpdatePose(true);
     if (AUTONOMOUS_COMMAND != null) {
       AUTONOMOUS_COMMAND.cancel();
     }

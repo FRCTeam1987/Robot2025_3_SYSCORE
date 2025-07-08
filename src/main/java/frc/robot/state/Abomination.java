@@ -180,7 +180,6 @@ public class Abomination {
         switch (PREVIOUS_STATE) {
           case CLIMB_DEPLOY -> {
             if (CLIMBER.isAtTarget()) {
-              //Add this logic as Climber.hasCage()
               if (CLIMBER.hasCage()) {
                 // setAction(DesiredAction.INIT);
                 return CLIMB_CLIMB;
@@ -193,6 +192,7 @@ public class Abomination {
           }
           case CLIMB_CLIMB -> {
             if (isDesired(DesiredAction.INIT)) {
+              setAction(DesiredAction.CLIMB_INIT);
               return CLIMB_DEPLOY;
             }
             return CLIMB_CLIMB;

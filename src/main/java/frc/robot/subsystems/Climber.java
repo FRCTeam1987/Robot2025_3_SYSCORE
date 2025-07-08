@@ -180,7 +180,7 @@ public class Climber extends BroncSystem {
   }
 
   public boolean isAtTarget() {
-    return getPosition().isNear(target, Degrees.of(3.0)); // was 0.5, new climber doesn't seem to be as consistent
+    return getPosition().isNear(target, Degrees.of(5.0)); // was 0.5, new climber doesn't seem to be as consistent
   }
 
   public AngularVelocity getRollerRPS() {

@@ -213,7 +213,7 @@ public class SubsystemConstants {
     public static final Angle FULLY_CLIMBED = Degrees.of(94.5); // was 93.0
 
     public static final Voltage ROLLER_VOLTAGE = Volts.of(10.0);
-    public static final AngularVelocity ROLLER_VELOCITY_THRESHOLD = AngularVelocity.ofBaseUnits(150.0, RotationsPerSecond);
+    public static final AngularVelocity ROLLER_VELOCITY_THRESHOLD = AngularVelocity.ofBaseUnits(200.0, RotationsPerSecond);
 
     public static final double CLIMBER_REDUCTION = (144);
 
@@ -221,7 +221,7 @@ public class SubsystemConstants {
       final CANcoderConfiguration CFG = new CANcoderConfiguration();
       // MagnetSensor
       CFG.MagnetSensor.withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
-      CFG.MagnetSensor.withMagnetOffset(Rotations.of(-0.296).plus(Degrees.of(90.0)));
+      CFG.MagnetSensor.withMagnetOffset(Rotations.of(-0.13127 - 0.25).plus(Degrees.of(90.0)));
       CFG.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(Rotations.of(1.0));
       return CFG;
     }
@@ -282,11 +282,11 @@ public class SubsystemConstants {
   public static class LightsConstants {
     public static final int CANDLE_ID = 1;
     public static final String CANBUS_NAME = "canfd";
-    public static final int OG = 8;
+    public static final int OG = 7;
     public static final int SIDE_START = OG;
-    public static final int SIDE_END = OG + 33;
+    public static final int SIDE_END = OG + 32;
     public static final int UPRIGHTS_START = SIDE_END;
-    public static final int UPRIGHTS_END = UPRIGHTS_START + 22;
+    public static final int UPRIGHTS_END = UPRIGHTS_START + 21;
     public static final int LARSON_SIZE = 5;
 
     public static final RGBWColor DISABLED = new RGBWColor(255, 0, 0);
