@@ -209,7 +209,7 @@ public class SubsystemConstants {
 
     public static final Angle FULLY_STOWED = Degrees.of(90.0);
     public static final Angle FULLY_EXTENDED = Degrees.of(178.0); // was 180.0
-    public static final Angle FULLY_CLIMBED = Degrees.of(95.5); // was 93.0
+    public static final Angle FULLY_CLIMBED = Degrees.of(94.5); // was 93.0
 
     public static final Voltage ROLLER_VOLTAGE = Volts.of(10.0);
     public static final AngularVelocity ROLLER_VELOCITY_THRESHOLD = AngularVelocity.ofBaseUnits(150.0, RotationsPerSecond);

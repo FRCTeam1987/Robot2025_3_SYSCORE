@@ -38,6 +38,8 @@ import frc.robot.RobotContainer;
 import frc.robot.state.Abomination;
 import frc.robot.state.commands.AsyncRumble;
 import frc.robot.state.logic.mode.ScoreMode;
+import frc.robot.subsystems.constants.SubsystemConstants.ClimberConstants;
+
 import java.util.function.Supplier;
 
 public class Climber extends BroncSystem {
@@ -185,6 +187,10 @@ public class Climber extends BroncSystem {
     return ROLLER.getVelocity().getValue();
   }
 
+  public boolean hasCage() {
+    return getRollerRPS().lt(ClimberConstants.ROLLER_VELOCITY_THRESHOLD);
+  }
+
   @Override
   public void log() {
     StatusCode allStatus =
@@ -197,7 +203,7 @@ public class Climber extends BroncSystem {
     if (RobotContainer.DEBUG) {
       DogLog.log("Climber/leaderPosition", LEADER_POSITION.getValueAsDouble());
       DogLog.log("Climber/encoderPosition", ENCODER_POSITION.getValueAsDouble());
-      // DogLog.log("Climber/encoderDegrees", Degrees.convertFrom(ENCODER_POSITION.getValueAsDouble(), Rotations));
+      DogLog.log("Climber/encoderDegrees", Degrees.convertFrom(ENCODER_POSITION.getValueAsDouble(), Rotations));
       DogLog.log("Climber/leaderCurrent", LEADER_SUPPLY_CURRENT.getValueAsDouble());
       // if (Abomination.getScoreMode() == ScoreMode.CLIMB) {
       //   DogLog.log("Climber/laserLDist", LASER_L_DATA.get().distance_mm);

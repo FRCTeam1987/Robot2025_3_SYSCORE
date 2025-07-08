@@ -180,11 +180,11 @@ public class Abomination {
         switch (PREVIOUS_STATE) {
           case CLIMB_DEPLOY -> {
             if (CLIMBER.isAtTarget()) {
-              // Add this logic as Climber.hasCage()
-              // if (CLIMBER.getRollerRPS().lt(ClimberConstants.ROLLER_VELOCITY_THRESHOLD)) {
-              //   setAction(DesiredAction.INIT);
-              //   return CLIMB_CLIMB;
-              // }
+              //Add this logic as Climber.hasCage()
+              if (CLIMBER.hasCage()) {
+                // setAction(DesiredAction.INIT);
+                return CLIMB_CLIMB;
+              }
               if (shouldScore()) {
                 return CLIMB_CLIMB;
               }
