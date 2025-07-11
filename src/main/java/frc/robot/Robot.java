@@ -13,9 +13,11 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 
 import dev.doglog.DogLog;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 // import dev.doglog.DogLogOptions;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.SystemServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -38,7 +40,7 @@ public class Robot extends TimedRobot {
         // new DogLogOptions().withLogExtras(false).withCaptureDs(false).withCaptureConsole(false));
     // CanBridge.runTCP();
     //RobotController.setBrownoutVoltage(6.0);
-
+    SystemServer.getSystemServer().startEntryDataLog(DataLogManager.getLog(), "/Netcomm/", "NTSS:");
     FollowPathCommand.warmupCommand().schedule();
     PathfindingCommand.warmupCommand().schedule();
     ROBOT_CONTAINER = new RobotContainer();
@@ -88,15 +90,18 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RobotContainer.autoTime = Timer.getFPGATimestamp();
 
-    RobotContainer.VISION.setShouldUpdatePose(false);
     AUTONOMOUS_COMMAND = RobotContainer.getAutonomousCommand();
 
     AutoHelpers.matchTimeIncrement = Timer.getFPGATimestamp();
 
-    DRIVETRAIN.tareEverything();
     if (AUTONOMOUS_COMMAND != null && hasRunAuto == false) {
       hasRunAuto = true;
+      DRIVETRAIN.tareEverything();
+      RobotContainer.VISION.setShouldUpdatePose(false);
       AUTONOMOUS_COMMAND.schedule();
+    }
+    if (hasRunAuto) {
+      RobotContainer.VISION.setShouldUpdatePose(true);
     }
     RobotContainer.ELEVATOR.setConfigAuto();
   }
