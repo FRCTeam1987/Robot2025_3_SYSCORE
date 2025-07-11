@@ -17,8 +17,8 @@ public enum PositionConstant {
   SIDE_1_A(new Translation2d(3.120 - 0.00, 4.192 + 0.005), SIDE_1_ENTRY.getAngle()),
   SIDE_1_ALGAE(new Translation2d(3.180 + 0.06, 4.023), SIDE_1_ENTRY.getAngle()),
   SIDE_1_B(new Translation2d(3.120 - 0.00, 3.862 + 0.005), SIDE_1_ENTRY.getAngle()),
-  SIDE_1_A1(new Translation2d(3.2 - 0.00, 4.5), flip(SIDE_1_ENTRY.getAngle())),
-  SIDE_1_B1(new Translation2d(3.2 - 0.00, 3.5), flip(SIDE_1_ENTRY.getAngle())),
+  SIDE_1_A1(SIDE_1_A.getTranslation(), flip(SIDE_1_ENTRY.getAngle())),
+  SIDE_1_B1(SIDE_1_B.getTranslation(), flip(SIDE_1_ENTRY.getAngle())),
 
   SIDE_2_ENTRY(rotateAroundBlueReef(SIDE_1_ENTRY, Degrees.of(60.0)), Degrees.of(60.0)),
   SIDE_2_C(rotateAroundBlueReef(SIDE_1_A, Degrees.of(60.0)), SIDE_2_ENTRY.getAngle()),

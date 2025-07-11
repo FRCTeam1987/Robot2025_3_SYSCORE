@@ -286,7 +286,7 @@ public class SubsystemConstants {
     public static final int SIDE_START = OG;
     public static final int SIDE_END = OG + 32;
     public static final int UPRIGHTS_START = SIDE_END;
-    public static final int UPRIGHTS_END = UPRIGHTS_START + 21;
+    public static final int UPRIGHTS_END = UPRIGHTS_START + 22;
     public static final int LARSON_SIZE = 5;
 
     public static final RGBWColor DISABLED = new RGBWColor(255, 0, 0);
