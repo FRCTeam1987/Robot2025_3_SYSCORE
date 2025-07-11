@@ -8,10 +8,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import frc.robot.RobotContainer;
 import frc.robot.state.Abomination;
 import frc.robot.state.commands.AsyncRumble;
 import frc.robot.state.logic.constants.FieldPosition;
+
+import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -147,26 +150,26 @@ public class Utils {
     }
   }
 
-  public static SendableChooser<PathPlannerAuto> buildAutoChooser(String defaultAutoName) {
+  public static SendableChooser<WrapperCommand> buildAutoChooser(String defaultAutoName) {
     return buildAutoChooserWithOptionsModifier(defaultAutoName, (stream) -> stream);
   }
 
-  public static SendableChooser<PathPlannerAuto> buildAutoChooserWithOptionsModifier(
+  public static SendableChooser<WrapperCommand> buildAutoChooserWithOptionsModifier(
       String defaultAutoName,
-      Function<Stream<PathPlannerAuto>, Stream<PathPlannerAuto>> optionsModifier) {
+      Function<Stream<WrapperCommand>, Stream<WrapperCommand>> optionsModifier) {
     if (!AutoBuilder.isConfigured()) {
       throw new RuntimeException(
           "AutoBuilder was not configured before attempting to build an auto chooser");
     }
 
-    SendableChooser<PathPlannerAuto> chooser = new SendableChooser<>();
+    SendableChooser<WrapperCommand> chooser = new SendableChooser<>();
     List<String> autoNames = AutoBuilder.getAllAutoNames();
 
-    PathPlannerAuto defaultOption = null;
-    List<PathPlannerAuto> options = new ArrayList<>();
+    WrapperCommand defaultOption = null;
+    List<WrapperCommand> options = new ArrayList<>();
 
     for (String autoName : autoNames) {
-      PathPlannerAuto auto = new PathPlannerAuto(autoName);
+      WrapperCommand auto = new PathPlannerAuto(autoName).ignoringDisable(true);
 
       if (!defaultAutoName.isEmpty() && defaultAutoName.equals(autoName)) {
         defaultOption = auto;
@@ -176,10 +179,10 @@ public class Utils {
     }
 
     if (defaultOption == null) {
-      chooser.setDefaultOption("None", new PathPlannerAuto(Commands.none()));
+      chooser.setDefaultOption("None", new PathPlannerAuto(Commands.none()).ignoringDisable(true));
     } else {
       chooser.setDefaultOption(defaultOption.getName(), defaultOption);
-      chooser.addOption("None", new PathPlannerAuto(Commands.none()));
+      chooser.addOption("None", new PathPlannerAuto(Commands.none()).ignoringDisable(false));
     }
 
     optionsModifier

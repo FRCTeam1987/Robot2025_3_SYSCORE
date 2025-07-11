@@ -19,16 +19,19 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import frc.robot.autos.AutoHelpers;
 
 public class Robot extends TimedRobot {
-  private PathPlannerAuto AUTONOMOUS_COMMAND;
+  private WrapperCommand AUTONOMOUS_COMMAND;
 
   private final RobotContainer ROBOT_CONTAINER;
 
   private double timeToCoast;
 
   public static boolean hasClimberCoasted = false;
+
+  public static boolean hasRunAuto = false;
 
   public Robot() {
         // DogLog.setOptions(
@@ -53,6 +56,7 @@ public class Robot extends TimedRobot {
     //    if (TEST_MODE) {
     //      LimelightHelpers.SetThrottle("limelight-scoring", 200);
     //    }
+    DriverStation.reportWarning("DISABLED!", false);
     timeToCoast = Timer.getFPGATimestamp();
   }
 
@@ -90,7 +94,8 @@ public class Robot extends TimedRobot {
     AutoHelpers.matchTimeIncrement = Timer.getFPGATimestamp();
 
     DRIVETRAIN.tareEverything();
-    if (AUTONOMOUS_COMMAND != null) {
+    if (AUTONOMOUS_COMMAND != null && hasRunAuto == false) {
+      hasRunAuto = true;
       AUTONOMOUS_COMMAND.schedule();
     }
     RobotContainer.ELEVATOR.setConfigAuto();

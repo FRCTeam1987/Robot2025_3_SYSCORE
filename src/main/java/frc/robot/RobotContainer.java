@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.Timer;
 // import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autos.AutoHelpers;
 import frc.robot.state.commands.ElevatorRezero;
@@ -41,7 +42,7 @@ public class RobotContainer {
   public static boolean BYPASS_TRACKER = true;
   public static final LinearVelocity MAX_SPEED = TunerConstants.kSpeedAt12Volts;
   public static final AngularVelocity MAX_ANGULAR_RATE = RotationsPerSecond.of(1.15);
-  private static SendableChooser<PathPlannerAuto> autoChooser;
+  private static SendableChooser<WrapperCommand> autoChooser;
   public static final SwerveRequest.FieldCentric DRIVE =
       new SwerveRequest.FieldCentric()
           .withDeadband(MAX_SPEED.in(MetersPerSecond) * 0.1)
@@ -131,7 +132,7 @@ public class RobotContainer {
             FieldZones.getZoneFromTranslation(alliance, robotTranslation), Inches.of(5.0));
   }
 
-  public static PathPlannerAuto getAutonomousCommand() {
+  public static WrapperCommand getAutonomousCommand() {
     return autoChooser.getSelected();
   }
 
